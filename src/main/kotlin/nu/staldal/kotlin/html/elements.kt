@@ -22,13 +22,11 @@ fun Html.style(text: String) = rawTextElement("style", text = text)
 fun Html.style(vararg attributes: Pair<String, Any>, text: String = "") =
     rawTextElement("style", *attributes, text = text)
 
-fun Html.textarea(text: String) = escapableRawTextElement("textarea", text = text)
-fun Html.textarea(vararg attributes: Pair<String, Any>, text: String) =
-    escapableRawTextElement("textarea", *attributes, text = text)
+inline fun Html.textarea(vararg attributes: Pair<String, Any>, crossinline block: Text.() -> Unit = {}) =
+    escapableRawTextElement("textarea", *attributes, block = block)
 
-fun Html.title(text: String) = escapableRawTextElement("title", text = text)
-fun Html.title(vararg attributes: Pair<String, Any>, text: String) =
-    escapableRawTextElement("title", *attributes, text = text)
+inline fun Html.title(vararg attributes: Pair<String, Any>, crossinline block: Text.() -> Unit = {}) =
+    escapableRawTextElement("title", *attributes, block = block)
 
 inline fun Html.a(vararg attributes: Pair<String, Any>, crossinline block: Html.() -> Unit = {}) =
     element("a", *attributes, block = block)

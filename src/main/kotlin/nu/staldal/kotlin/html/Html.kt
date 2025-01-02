@@ -8,7 +8,8 @@ package nu.staldal.kotlin.html
  * @property out where to write the generated HTML
  * @property prettyPrint generate whitespace for readability
  */
-class Html(val out: Appendable, val prettyPrint: Boolean = true) {
+@HtmlDsl
+class Html(val out: Appendable, val prettyPrint: Boolean = true) : Text {
     private var indentLevel: Int = 0
 
     /**
@@ -72,33 +73,21 @@ class Html(val out: Appendable, val prettyPrint: Boolean = true) {
      * Adds a [escapable raw text element](https://html.spec.whatwg.org/multipage/syntax.html#escapable-raw-text-elements)
      * with the specific name to the parent.
      * ```
-     * escapableRawTextElement("title", "Some text")
-     * ```
-     *
-     * @param name name of the element.
-     * @param text inner text of the element
-     */
-    fun escapableRawTextElement(name: String, text: String) {
-        element(name) {
-            text(text)
-        }
-    }
-
-    /**
-     * Adds a [escapable raw text element](https://html.spec.whatwg.org/multipage/syntax.html#escapable-raw-text-elements)
-     * with the specific name to the parent.
-     * ```
-     * escapableRawTextElement("textarea", "name" to "the-area", "Some text")
+     * escapableRawTextElement("textarea", "name" to "the-area") {
+     *     +"Some text"
+     * }
      * ```
      *
      * @param name name of the element.
      * @param attributes attributes to add to this element. Can be omitted.
-     * @param text inner text of the element
+     * @param block block that defines the content of the element.
      */
-    fun escapableRawTextElement(name: String, vararg attributes: Pair<String, Any>, text: String) {
-        element(name, *attributes) {
-            text(text)
-        }
+    inline fun escapableRawTextElement(
+        name: String,
+        vararg attributes: Pair<String, Any>,
+        crossinline block: Text.() -> Unit = {}
+    ) {
+        element(name, *attributes, block = block)
     }
 
     /**
@@ -188,14 +177,14 @@ class Html(val out: Appendable, val prettyPrint: Boolean = true) {
      *
      * @receiver text to be added to the document
      */
-    operator fun String.unaryPlus() = text(this)
+    override operator fun String.unaryPlus() = text(this)
 
     /**
      * Appends the given string as text to the document.
      *
      * @param text text to be added to the document
      */
-    fun text(text: String) {
+    override fun text(text: String) {
         indent()
         out.append(escapeText(text))
         eol()
@@ -211,7 +200,7 @@ class Html(val out: Appendable, val prettyPrint: Boolean = true) {
      *
      * @param text text to be added to the document
      */
-    fun unsafeText(text: String) {
+    override fun unsafeText(text: String) {
         indent()
         out.append(text)
         eol()
@@ -222,7 +211,7 @@ class Html(val out: Appendable, val prettyPrint: Boolean = true) {
      *
      * @param text  text of the CDATA node.
      */
-    fun cdata(text: String) {
+    override fun cdata(text: String) {
         indent()
         out.append(CDATA_START)
         // split CDATA_END into two pieces so parser doesn't recognize it

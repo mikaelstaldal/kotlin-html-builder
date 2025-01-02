@@ -8,7 +8,9 @@ class HtmlBuilderTest : TestBase() {
 		val html = htmlDoc {
 			html("lang" to "en") {
 				head {
-					title("My title")
+					title {
+						+"My title"
+					}
 				}
 				body {
 					comment("The list")
@@ -314,7 +316,9 @@ class HtmlBuilderTest : TestBase() {
 	@Test
 	fun escapableRawTextElement() {
 		val html = htmlFragment {
-			title("foo & bar")
+			title {
+				+"foo & bar"
+			}
 		}
 
 		validate("""
