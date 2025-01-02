@@ -77,7 +77,9 @@ val output: Appendable = // ...
 output.htmlDoc {
     html("lang" to "en") {
         head {
-            title("My title")
+            title {
+                +"My title"
+            }
         }
         body {
             comment("The list")
@@ -119,7 +121,7 @@ produces
 ```
 
 ```kotlin
-val theHtml: String = htmlFragment {
+val theHtml: String = partialHtml {
     for (i in 1..3) {
         li {
             +"Item $i"
@@ -143,7 +145,7 @@ produces
 ## Unsafe
 Text and attribute values are by default escaped to produce valid HTML. This can be selectively disabled:
 ```kotlin
-val theHtml = htmlFragment {
+val theHtml = partialHtml {
     div("class" to unsafe("&")) {
         unsafeText("<&>")
     }

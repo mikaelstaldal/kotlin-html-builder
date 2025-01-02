@@ -1,12 +1,11 @@
 package nu.staldal.kotlin.html
 
 import org.junit.jupiter.api.Test
-import java.text.SimpleDateFormat
 
 class CustomDSLTest : TestBase() {
     @Test
     fun test() {
-        val result = htmlFragment {
+        val result = partialHtml {
             myList {
                 for (i in 1..3) {
                     myItem("Name $i")

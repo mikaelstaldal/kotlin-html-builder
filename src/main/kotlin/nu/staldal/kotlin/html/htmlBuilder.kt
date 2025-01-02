@@ -49,46 +49,46 @@ fun Appendable.htmlDoc(
 }
 
 /**
- * Creates a pretty-printed HTML fragment, without doctype.
- * Can be used to create a fragment without a single root element.
+ * Creates a partial pretty-printed HTML, without doctype.
+ * Can be used to create a partial without a single root element.
  *
- * @param block The block that defines the content of the HTML fragment
+ * @param block The block that defines the content of the HTML partial
  *
- * @return the generated HTML fragment
+ * @return the generated HTML partial
  */
-fun htmlFragment(block: Html.() -> Unit): String =
-    buildString { htmlFragment(block) }
+fun partialHtml(block: Html.() -> Unit): String =
+    buildString { partialHtml(block) }
 
 /**
- * Creates an HTML fragment, without doctype.
- * Can be used to create a fragment without a single root element.
+ * Creates a partial HTML, without doctype.
+ * Can be used to create a partial without a single root element.
  *
  * @param prettyPrint generate whitespace for readability
- * @param block The block that defines the content of the HTML fragment
+ * @param block The block that defines the content of the HTML partial
  *
- * @return the generated HTML fragment
+ * @return the generated HTML partial
  */
-fun htmlFragment(prettyPrint: Boolean, block: Html.() -> Unit): String =
-    buildString { htmlFragment(prettyPrint, block) }
+fun partialHtml(prettyPrint: Boolean, block: Html.() -> Unit): String =
+    buildString { partialHtml(prettyPrint, block) }
 
 /**
- * Creates a pretty-printed HTML fragment, without doctype.
- * Can be used to create a fragment without a single root element.
+ * Creates a partial pretty-printed HTML, without doctype.
+ * Can be used to create a partial without a single root element.
  *
- * @param block The block that defines the content of the HTML fragment
+ * @param block The block that defines the content of the HTML partial
  */
-fun Appendable.htmlFragment(block: Html.() -> Unit) {
-    htmlFragment(prettyPrint = true, block = block)
+fun Appendable.partialHtml(block: Html.() -> Unit) {
+    partialHtml(prettyPrint = true, block = block)
 }
 
 /**
- * Creates an HTML fragment, without doctype.
- * Can be used to create a fragment without a single root element.
+ * Creates a partial HTML, without doctype.
+ * Can be used to create a partial without a single root element.
  *
  * @param prettyPrint generate whitespace for readability
- * @param block The block that defines the content of the HTML fragment
+ * @param block The block that defines the content of the HTML partial
  */
-fun Appendable.htmlFragment(prettyPrint: Boolean, block: Html.() -> Unit) {
+fun Appendable.partialHtml(prettyPrint: Boolean, block: Html.() -> Unit) {
     val generator = Html(this, prettyPrint)
     generator.block()
 }

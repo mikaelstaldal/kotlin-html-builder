@@ -53,8 +53,8 @@ class HtmlBuilderTest : TestBase() {
 	}
 
 	@Test
-	fun fragment() {
-		val html = htmlFragment {
+	fun partial() {
+		val html = partialHtml {
 			for (i in 1..3) {
 				li {
 					+"Item $i"
@@ -88,8 +88,8 @@ class HtmlBuilderTest : TestBase() {
 	}
 
 	@Test
-	fun notPrettyFormattingFragment() {
-		val html = htmlFragment(prettyPrint = false) {
+	fun notPrettyFormattingPartial() {
+		val html = partialHtml(prettyPrint = false) {
 			div {
 				+"Hello"
 			}
@@ -103,7 +103,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun comment() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			comment("my comment -->")
 			div {
 				+"value"
@@ -121,7 +121,7 @@ class HtmlBuilderTest : TestBase() {
 	
 	@Test
 	fun emptyElement() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			span()
 		}
 
@@ -136,7 +136,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun cdata() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			cdata("Some & xml")
 		}
 
@@ -148,7 +148,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun cdataNesting() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			cdata("<![CDATA[Some & xml]]>")
 		}
 
@@ -160,7 +160,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun xmlEncode() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			span { +"&<>" }
 		}
 
@@ -174,7 +174,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun elementWithAttributes() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			div("id" to "value", "class" to "other") {}
 		}
 
@@ -189,7 +189,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun elementAsStringWithAttributesAndContent() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			div("id" to "value") {
 				+"Content"
 			}
@@ -207,7 +207,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun quoteInAttribute() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			meta("content" to "My \" Attribute value '")
 		}
 
@@ -219,7 +219,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun specialCharInAttribute() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			meta("content" to "& < > \" '")
 		}
 
@@ -231,7 +231,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun emptyAttribute() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			input("disabled" to true)
 			input("disabled" to false)
 		}
@@ -245,7 +245,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun unsafe() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			div("class" to unsafe("&")) {
 				unsafeText("<&>")
 			}
@@ -263,7 +263,7 @@ class HtmlBuilderTest : TestBase() {
 	fun escape() {
 		val unescapedValue = """<tag> & "double" 'single' €"""
 
-		val html = htmlFragment {
+		val html = partialHtml {
 			div("test" to unescapedValue) {
 				+unescapedValue
 			}
@@ -279,7 +279,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun voidElement() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			div {
 				+"first"
 				br()
@@ -300,7 +300,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun rawTextElement() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			script("foo & bar")
 		}
 
@@ -315,7 +315,7 @@ class HtmlBuilderTest : TestBase() {
 
 	@Test
 	fun escapableRawTextElement() {
-		val html = htmlFragment {
+		val html = partialHtml {
 			title {
 				+"foo & bar"
 			}
