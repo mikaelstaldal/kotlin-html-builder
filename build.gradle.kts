@@ -1,5 +1,5 @@
 group = "nu.staldal"
-version = "0.2.0-SNAPSHOT"
+version = "0.2.0"
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
