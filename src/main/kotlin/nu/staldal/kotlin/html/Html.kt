@@ -42,9 +42,10 @@ class Html(val out: Appendable, val prettyPrint: Boolean = true) : Text {
      * ```
      * rawTextElement("script", "Some text")
      * ```
+     * The content of the element is treated as raw text and will not be escaped.
      *
      * @param name name of the element.
-     * @param text inner text of the element
+     * @param text raw text content
      */
     fun rawTextElement(name: String, text: String) {
         element(name) {
@@ -59,9 +60,11 @@ class Html(val out: Appendable, val prettyPrint: Boolean = true) : Text {
      * rawTextElement("script", "type" to "module", "Some text")
      * ```
      *
+     * The content of the element is treated as raw text and will not be escaped.
+     *
      * @param name name of the element.
-     * @param attributes attributes to add to this element. Can be omitted.
-     * @param text inner text of the element
+     * @param attributes attributes to add to this element.
+     * @param text raw text content
      */
     fun rawTextElement(name: String, vararg attributes: Pair<String, Any>, text: String) {
         element(name, *attributes) {
