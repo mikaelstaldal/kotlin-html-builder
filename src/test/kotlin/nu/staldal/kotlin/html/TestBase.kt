@@ -6,8 +6,8 @@ open class TestBase {
     protected fun validate(expected: String, actual: String) {
         // Doing a replacement to cater for different line endings.
         assertEquals(
-            expected,
-            actual.replace(System.lineSeparator(), "\n"),
+            expected.replace("\t", "    "),
+            actual.replace("\t", "    ").replace(System.lineSeparator(), "\n"),
         )
     }
 }

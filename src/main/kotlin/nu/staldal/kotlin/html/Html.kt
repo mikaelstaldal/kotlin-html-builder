@@ -79,6 +79,49 @@ class Html(val out: Appendable, val prettyPrint: Boolean = true) : Text {
     }
 
     /**
+     * Adds a [foreign element](https://html.spec.whatwg.org/multipage/syntax.html#foreign-elements)
+     * with the specific name to the parent. This method allows you to specify optional attributes and content
+     * ```
+     * element("svg", "id" to "figure") {
+     *    // ...
+     * }
+     * ```
+     *
+     * @param name name of the element.
+     * @param attributes attributes to add to this element. Can be omitted.
+     * @param block block that defines the content of the element.
+     */
+    inline fun foreignElement(
+        name: String,
+        vararg attributes: Pair<String, Any>,
+        crossinline block: Html.() -> Unit = {}
+    ) {
+        startTag(name, attributes)
+        block()
+        endTag(name)
+    }
+
+    /**
+     * Adds a [normal element](https://html.spec.whatwg.org/multipage/syntax.html#normal-elements)
+     * with the specific name to the parent. This method allows you to specify optional attributes and content
+     * ```
+     * "custom"("class" to "alert") {
+     *    // ...
+     * }
+     * ```
+     *
+     * @receiver name of the element.
+     * @param attributes attributes to add to this element. Can be omitted.
+     * @param block block that defines the content of the element.
+     */
+    inline operator fun String.invoke(
+        vararg attributes: Pair<String, Any>,
+        crossinline block: Html.() -> Unit = {}
+    ) {
+        element(this, *attributes, block = block)
+    }
+
+    /**
      * Adds a [normal element](https://html.spec.whatwg.org/multipage/syntax.html#normal-elements)
      * with the specific name to the parent. This method allows you to specify optional attributes and content
      * ```

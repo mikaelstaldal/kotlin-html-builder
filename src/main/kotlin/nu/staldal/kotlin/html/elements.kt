@@ -26,6 +26,12 @@ inline fun Html.textarea(vararg attributes: Pair<String, Any>, crossinline block
 inline fun Html.title(vararg attributes: Pair<String, Any>, crossinline block: Text.() -> Unit = {}) =
     escapableRawTextElement("title", *attributes, block = block)
 
+inline fun Html.math(vararg attributes: Pair<String, Any>, crossinline block: Html.() -> Unit = {}) =
+    foreignElement("math", *attributes, block = block)
+
+inline fun Html.svg(vararg attributes: Pair<String, Any>, crossinline block: Html.() -> Unit = {}) =
+    foreignElement("svg", *attributes, block = block)
+
 inline fun Html.a(vararg attributes: Pair<String, Any>, crossinline block: Html.() -> Unit = {}) =
     element("a", *attributes, block = block)
 

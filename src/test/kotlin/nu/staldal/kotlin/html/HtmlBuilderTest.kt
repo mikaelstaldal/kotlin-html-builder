@@ -362,4 +362,74 @@ class HtmlBuilderTest : TestBase() {
             html
         )
     }
+
+    @Test
+    fun foreignElements() {
+        val html = htmlDoc {
+            html {
+                head {
+                    title {
+                        +"Foreign elements"
+                    }
+                }
+                body {
+                    svg("width" to 100, "height" to 100) {
+                        "circle"(
+                            "cx" to 50,
+                            "cy" to 50,
+                            "r" to 40,
+                            "stroke" to "green",
+                            "stroke-width" to 4,
+                            "fill" to "yellow"
+                        )
+                    }
+                    math {
+                        "mfrac" {
+                            "mn" {
+                                +"1"
+                            }
+                            "msqrt" {
+                                "mn" {
+                                    +"2"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        validate(
+            """
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <title>
+                        Foreign elements
+                    </title>
+                </head>
+                <body>
+                    <svg width="100" height="100">
+                        <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow">
+                        </circle>
+                    </svg>
+                    <math>
+                        <mfrac>
+                            <mn>
+                                1
+                            </mn>
+                            <msqrt>
+                                <mn>
+                                    2
+                                </mn>
+                            </msqrt>
+                        </mfrac>
+                    </math>
+                </body>
+            </html>
+
+		""".trimIndent(),
+            html
+        )
+    }
 }
