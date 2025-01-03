@@ -147,7 +147,7 @@ Text and attribute values are by default escaped to produce valid HTML. This can
 ```kotlin
 val theHtml = partialHtml {
     div("class" to unsafe("&")) {
-        unsafeText("<&>")
+        unsafe("<&>")
     }
 }
 ```

@@ -1,9 +1,11 @@
 package nu.staldal.kotlin.html
 
 @HtmlDsl
-interface Text {
+interface Text: RawText {
     /**
      * Adds the given string as text to the document.
+     *
+     * The text will be escaped as necessary.
      *
      * @receiver text to be added to the document
      */
@@ -12,21 +14,9 @@ interface Text {
     /**
      * Appends the given string as text to the document.
      *
+     * The text will be escaped as necessary.
+     *
      * @param text text to be added to the document
      */
     fun text(text: String)
-
-    /**
-     * Appends the given string as text to the document without escaping.
-     *
-     * @param text text to be added to the document
-     */
-    fun unsafeText(text: String)
-
-    /**
-     * Adds the supplied text as a CDATA node
-     *
-     * @param text  text of the CDATA node.
-     */
-    fun cdata(text: String)
 }

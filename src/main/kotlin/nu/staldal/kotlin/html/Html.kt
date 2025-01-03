@@ -40,36 +40,21 @@ class Html(val out: Appendable, val prettyPrint: Boolean = true) : Text {
      * Adds a [raw text element](https://html.spec.whatwg.org/multipage/syntax.html#raw-text-elements)
      * with the specific name to the parent.
      * ```
-     * rawTextElement("script", "Some text")
+     * rawTextElement("script", "type" to "module") {
+     *     unsafe("foo & bar")
+     * }
      * ```
-     * The content of the element is treated as raw text and will not be escaped.
-     *
-     * @param name name of the element.
-     * @param text raw text content
-     */
-    fun rawTextElement(name: String, text: String) {
-        element(name) {
-            unsafeText(text)
-        }
-    }
-
-    /**
-     * Adds a [raw text element](https://html.spec.whatwg.org/multipage/syntax.html#raw-text-elements)
-     * with the specific name to the parent.
-     * ```
-     * rawTextElement("script", "type" to "module", "Some text")
-     * ```
-     *
-     * The content of the element is treated as raw text and will not be escaped.
      *
      * @param name name of the element.
      * @param attributes attributes to add to this element.
-     * @param text raw text content
+     * @param block block that defines the content of the element.
      */
-    fun rawTextElement(name: String, vararg attributes: Pair<String, Any>, text: String) {
-        element(name, *attributes) {
-            unsafeText(text)
-        }
+    inline fun rawTextElement(
+        name: String,
+        vararg attributes: Pair<String, Any>,
+        crossinline block: RawText.() -> Unit = {}
+    ) {
+        element(name, *attributes, block = block)
     }
 
     /**
@@ -203,7 +188,7 @@ class Html(val out: Appendable, val prettyPrint: Boolean = true) : Text {
      *
      * @param text text to be added to the document
      */
-    override fun unsafeText(text: String) {
+    override fun unsafe(text: String) {
         indent()
         out.append(text)
         eol()
@@ -214,7 +199,7 @@ class Html(val out: Appendable, val prettyPrint: Boolean = true) : Text {
      *
      * @param text  text of the CDATA node.
      */
-    override fun cdata(text: String) {
+    fun cdata(text: String) {
         indent()
         out.append(CDATA_START)
         // split CDATA_END into two pieces so parser doesn't recognize it
@@ -224,7 +209,7 @@ class Html(val out: Appendable, val prettyPrint: Boolean = true) : Text {
     }
 
     /**
-     * Adds an HTML comment to the document.
+     * Adds an <!-- HTML comment --> to the document.
      * ```
      * comment("my comment")
      * ```

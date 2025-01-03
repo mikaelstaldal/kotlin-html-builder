@@ -3,29 +3,30 @@ package nu.staldal.kotlin.html
 import org.junit.jupiter.api.Test
 
 class HtmlBuilderTest : TestBase() {
-	@Test
-	fun document() {
-		val html = htmlDoc {
-			html("lang" to "en") {
-				head {
-					title {
-						+"My title"
-					}
-				}
-				body {
-					comment("The list")
-					ul {
-						for (i in 0..2) {
-							element("li") {
-								+"Item $i"
-							}
-						}
-					}
-				}
-			}
-		}
+    @Test
+    fun document() {
+        val html = htmlDoc {
+            html("lang" to "en") {
+                head {
+                    title {
+                        +"My title"
+                    }
+                }
+                body {
+                    comment("The list")
+                    ul {
+                        for (i in 0..2) {
+                            element("li") {
+                                +"Item $i"
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-		validate("""
+        validate(
+            """
 		<!DOCTYPE html>
 		<html lang="en">
 			<head>
@@ -49,20 +50,22 @@ class HtmlBuilderTest : TestBase() {
 			</body>
 		</html>
 		
-		""".trimIndent(), html)
-	}
+		""".trimIndent(), html
+        )
+    }
 
-	@Test
-	fun partial() {
-		val html = partialHtml {
-			for (i in 1..3) {
-				li {
-					+"Item $i"
-				}
-			}
-		}
+    @Test
+    fun partial() {
+        val html = partialHtml {
+            for (i in 1..3) {
+                li {
+                    +"Item $i"
+                }
+            }
+        }
 
-		validate("""
+        validate(
+            """
 		<li>
 			Item 1
 		</li>
@@ -73,221 +76,244 @@ class HtmlBuilderTest : TestBase() {
 			Item 3
 		</li>
 		
-		""".trimIndent(), html)
-	}
+		""".trimIndent(), html
+        )
+    }
 
-	@Test
-	fun notPrettyFormattingDoc() {
-		val html = htmlDoc(prettyPrint = false) {
-			html {
-				div()
-			}
-		}
+    @Test
+    fun notPrettyFormattingDoc() {
+        val html = htmlDoc(prettyPrint = false) {
+            html {
+                div()
+            }
+        }
 
-		validate("""<!DOCTYPE html><html><div></div></html>""", html)
-	}
+        validate("""<!DOCTYPE html><html><div></div></html>""", html)
+    }
 
-	@Test
-	fun notPrettyFormattingPartial() {
-		val html = partialHtml(prettyPrint = false) {
-			div {
-				+"Hello"
-			}
-			span {
-				+"Test"
-			}
-		}
+    @Test
+    fun notPrettyFormattingPartial() {
+        val html = partialHtml(prettyPrint = false) {
+            div {
+                +"Hello"
+            }
+            span {
+                +"Test"
+            }
+        }
 
-		validate("""<div>Hello</div><span>Test</span>""", html)
-	}
+        validate("""<div>Hello</div><span>Test</span>""", html)
+    }
 
-	@Test
-	fun comment() {
-		val html = partialHtml {
-			comment("my comment -->")
-			div {
-				+"value"
-			}
-		}
+    @Test
+    fun comment() {
+        val html = partialHtml {
+            comment("my comment -->")
+            div {
+                +"value"
+            }
+        }
 
-		validate("""
+        validate(
+            """
 		<!-- my comment &#45;&#45;> -->
 		<div>
 			value
 		</div>
 		
-		""".trimIndent(), html)
-	}
-	
-	@Test
-	fun emptyElement() {
-		val html = partialHtml {
-			span()
-		}
+		""".trimIndent(), html
+        )
+    }
 
-		validate("""
+    @Test
+    fun emptyElement() {
+        val html = partialHtml {
+            span()
+        }
+
+        validate(
+            """
 			<span>
 			</span>
 		
 		""".trimIndent(),
-			html
-		)
-	}
+            html
+        )
+    }
 
-	@Test
-	fun cdata() {
-		val html = partialHtml {
-			cdata("Some & xml")
-		}
+    @Test
+    fun cdata() {
+        val html = partialHtml {
+            cdata("Some & xml")
+        }
 
-		validate("""
+        validate(
+            """
 			<![CDATA[Some & xml]]>
 		
-		""".trimIndent(), html)
-	}
+		""".trimIndent(), html
+        )
+    }
 
-	@Test
-	fun cdataNesting() {
-		val html = partialHtml {
-			cdata("<![CDATA[Some & xml]]>")
-		}
+    @Test
+    fun cdataNesting() {
+        val html = partialHtml {
+            cdata("<![CDATA[Some & xml]]>")
+        }
 
-		validate("""
+        validate(
+            """
 			<![CDATA[<![CDATA[Some & xml]]]]><![CDATA[>]]>
 		
-		""".trimIndent(), html)
-	}
+		""".trimIndent(), html
+        )
+    }
 
-	@Test
-	fun xmlEncode() {
-		val html = partialHtml {
-			span { +"&<>" }
-		}
+    @Test
+    fun xmlEncode() {
+        val html = partialHtml {
+            span { +"&<>" }
+        }
 
-		validate("""
+        validate(
+            """
 		<span>
 			&amp;&lt;&gt;
 		</span>
 		
-		""".trimIndent(), html)
-	}
+		""".trimIndent(), html
+        )
+    }
 
-	@Test
-	fun elementWithAttributes() {
-		val html = partialHtml {
-			div("id" to "value", "class" to "other") {}
-		}
+    @Test
+    fun elementWithAttributes() {
+        val html = partialHtml {
+            div("id" to "value", "class" to "other") {}
+        }
 
-		validate("""
+        validate(
+            """
 			<div id="value" class="other">
 			</div>
 		
 		""".trimIndent(),
-			html
-		)
-	}
+            html
+        )
+    }
 
-	@Test
-	fun elementAsStringWithAttributesAndContent() {
-		val html = partialHtml {
-			div("id" to "value") {
-				+"Content"
-			}
-		}
+    @Test
+    fun elementAsStringWithAttributesAndContent() {
+        val html = partialHtml {
+            div("id" to "value") {
+                +"Content"
+            }
+        }
 
-		validate("""
+        validate(
+            """
 			<div id="value">
 				Content
 			</div>
 		
 		""".trimIndent(),
-			html
-		)
-	}
+            html
+        )
+    }
 
-	@Test
-	fun quoteInAttribute() {
-		val html = partialHtml {
-			meta("content" to "My \" Attribute value '")
-		}
+    @Test
+    fun quoteInAttribute() {
+        val html = partialHtml {
+            meta("content" to "My \" Attribute value '")
+        }
 
-		validate("""
+        validate(
+            """
 			<meta content="My &quot; Attribute value &apos;">
 			
-		""".trimIndent(), html)
-	}
+		""".trimIndent(), html
+        )
+    }
 
-	@Test
-	fun specialCharInAttribute() {
-		val html = partialHtml {
-			meta("content" to "& < > \" '")
-		}
+    @Test
+    fun specialCharInAttribute() {
+        val html = partialHtml {
+            meta("content" to "& < > \" '")
+        }
 
-		validate("""
+        validate(
+            """
 			<meta content="&amp; &lt; &gt; &quot; &apos;">
 			
-		""".trimIndent(), html)
-	}
+		""".trimIndent(), html
+        )
+    }
 
-	@Test
-	fun emptyAttribute() {
-		val html = partialHtml {
-			input("disabled" to true)
-			input("disabled" to false)
-		}
+    @Test
+    fun emptyAttribute() {
+        val html = partialHtml {
+            input("disabled" to true)
+            input("disabled" to false)
+        }
 
-		validate("""
+        validate(
+            """
 			<input disabled>
 			<input>
 			
-		""".trimIndent(), html)
-	}
+		""".trimIndent(), html
+        )
+    }
 
-	@Test
-	fun unsafe() {
-		val html = partialHtml {
-			div("class" to unsafe("&")) {
-				unsafeText("<&>")
-			}
-		}
+    @Test
+    fun unsafe() {
+        val html = partialHtml {
+            div("class" to nu.staldal.kotlin.html.unsafe("&")) {
+                this.unsafe("<&>")
+            }
+        }
 
-		validate("""
+        validate(
+            """
 			<div class="&">
 				<&>
 			</div>
 
-		""".trimIndent(), html)
-	}
+		""".trimIndent(), html
+        )
+    }
 
-	@Test
-	fun escape() {
-		val unescapedValue = """<tag> & "double" 'single' €"""
+    @Test
+    fun escape() {
+        val unescapedValue = """<tag> & "double" 'single' €"""
 
-		val html = partialHtml {
-			div("test" to unescapedValue) {
-				+unescapedValue
-			}
-		}
+        val html = partialHtml {
+            div("test" to unescapedValue) {
+                +unescapedValue
+            }
+        }
 
-		validate("""
+        validate(
+            """
 			<div test="&lt;tag&gt; &amp; &quot;double&quot; &apos;single&apos; €">
 				&lt;tag&gt; &amp; "double" 'single' €
 			</div>
 
-		""".trimIndent(), html)
-	}
+		""".trimIndent(), html
+        )
+    }
 
-	@Test
-	fun voidElement() {
-		val html = partialHtml {
-			div {
-				+"first"
-				br()
-				+"second"
-			}
-		}
+    @Test
+    fun voidElement() {
+        val html = partialHtml {
+            div {
+                +"first"
+                br()
+                +"second"
+            }
+        }
 
-		validate("""
+        validate(
+            """
 			<div>
 				first
 				<br>
@@ -295,38 +321,45 @@ class HtmlBuilderTest : TestBase() {
 			</div>
 		
 		""".trimIndent(),
-			html)
-	}
+            html
+        )
+    }
 
-	@Test
-	fun rawTextElement() {
-		val html = partialHtml {
-			script("foo & bar")
-		}
+    @Test
+    fun rawTextElement() {
+        val html = partialHtml {
+            script {
+                unsafe("foo & bar")
+            }
+        }
 
-		validate("""
+        validate(
+            """
 			<script>
 				foo & bar
 			</script>
 		
 		""".trimIndent(),
-			html)
-	}
+            html
+        )
+    }
 
-	@Test
-	fun escapableRawTextElement() {
-		val html = partialHtml {
-			title {
-				+"foo & bar"
-			}
-		}
+    @Test
+    fun escapableRawTextElement() {
+        val html = partialHtml {
+            title {
+                +"foo & bar"
+            }
+        }
 
-		validate("""
+        validate(
+            """
 			<title>
 				foo &amp; bar
 			</title>
 		
 		""".trimIndent(),
-			html)
-	}
+            html
+        )
+    }
 }

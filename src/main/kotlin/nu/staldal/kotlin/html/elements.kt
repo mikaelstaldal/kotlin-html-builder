@@ -14,45 +14,11 @@ fun Html.source(vararg attributes: Pair<String, Any>) = voidElement("source", *a
 fun Html.track(vararg attributes: Pair<String, Any>) = voidElement("track", *attributes)
 fun Html.wbr(vararg attributes: Pair<String, Any>) = voidElement("wbr", *attributes)
 
-/**
- * Adds a `<script>` element to the HTML document with raw text content.
- *
- * The content of the `<script>` element is treated as raw text and will not be escaped.
- *
- * @param text the raw text content of the `<script>` element.
- */
-fun Html.script(text: String) = rawTextElement("script", text = text)
+inline fun Html.script(vararg attributes: Pair<String, Any>, crossinline block: RawText.() -> Unit = {}) =
+    rawTextElement("script", *attributes, block = block)
 
-/**
- * Adds a `<script>` element to the HTML document with attributes and raw text content.
- *
- * The content of the `<script>` element is treated as raw text and will not be escaped.
- *
- * @param attributes attributes to add to the `<script>` element as key-value pairs.
- * @param text the raw text content of the `<script>` element. Defaults to an empty string if not provided.
- */
-fun Html.script(vararg attributes: Pair<String, Any>, text: String = "") =
-    rawTextElement("script", *attributes, text = text)
-
-/**
- * Adds a `<style>` element to the HTML document with raw text content.
- *
- * The content of the `<style>` element is treated as raw text and will not be escaped.
- *
- * @param text the raw text content of the `<style>` element.
- */
-fun Html.style(text: String) = rawTextElement("style", text = text)
-
-/**
- * Adds a `<style>` element to the HTML document with attributes and raw text content.
- *
- * The content of the `<style>` element is treated as raw text and will not be escaped.
- *
- * @param attributes attributes to add to the `<style>` element as key-value pairs.
- * @param text the raw text content of the `<style>` element. Defaults to an empty string if not provided.
- */
-fun Html.style(vararg attributes: Pair<String, Any>, text: String = "") =
-    rawTextElement("style", *attributes, text = text)
+inline fun Html.style(vararg attributes: Pair<String, Any>, crossinline block: RawText.() -> Unit = {}) =
+    rawTextElement("style", *attributes, block = block)
 
 inline fun Html.textarea(vararg attributes: Pair<String, Any>, crossinline block: Text.() -> Unit = {}) =
     escapableRawTextElement("textarea", *attributes, block = block)
