@@ -170,7 +170,7 @@ class HtmlBuilderTest : TestBase() {
     }
 
     @Test
-    fun xmlEncode() {
+    fun escapeText() {
         val html = partialHtml {
             span { +"&<>" }
         }
