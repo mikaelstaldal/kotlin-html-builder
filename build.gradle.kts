@@ -55,9 +55,35 @@ publishing {
             from(components["java"]) // Includes the main Java/Kotlin component
             artifact(sourcesJar) // Adds the source JAR
 	    artifact(dokkaJavadocJar) // Adds the Javadoc JAR
+            pom {
+                name = "Kotlin HTML Builder"
+                description = "This library can be used to build HTML documents from Kotlin code"
+                url = "https://github.com/mikaelstaldal/kotlin-html-builder"
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "mikaelstaldal"
+                        name = "Mikael Ståldal"
+                        email = "mikael@staldal.nu"
+                    }
+                }
+                scm {
+                    connection = "scm:git:git://github.com/mikaelstaldal/kotlin-html-builder.git"
+                    developerConnection = "scm:git:ssh://github.com:mikaelstaldal/kotlin-html-builder.git"
+                    url = "https://github.com/mikaelstaldal/kotlin-html-builder/tree/main"
+                }
+            }
         }
     }
     repositories {
-        mavenLocal() // Publish to the local Maven repository
+        mavenLocal()
+        maven {
+            url = uri("file:mavenPublish")
+        }
     }
 }
