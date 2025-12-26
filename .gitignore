@@ -4,3 +4,4 @@ gradle.properties
 build/
 .idea
 out
+mavenPublish
