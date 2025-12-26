@@ -9,6 +9,8 @@ plugins {
     `java-library`
 
     `maven-publish`
+
+    id("org.jetbrains.dokka-javadoc") version "2.1.0"
 }
 
 java {
@@ -40,11 +42,19 @@ val sourcesJar by tasks.registering(Jar::class) {
     from(sourceSets["main"].allSource)
 }
 
+// To generate documentation in Javadoc
+val dokkaJavadocJar by tasks.registering(Jar::class) {
+    description = "A Javadoc JAR containing Dokka Javadoc"
+    from(tasks.dokkaGeneratePublicationJavadoc.flatMap { it.outputDirectory })
+    archiveClassifier.set("javadoc")
+}
+
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"]) // Includes the main Java/Kotlin component
             artifact(sourcesJar) // Adds the source JAR
+	    artifact(dokkaJavadocJar) // Adds the Javadoc JAR
         }
     }
     repositories {
