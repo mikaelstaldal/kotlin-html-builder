@@ -31,12 +31,6 @@ limitations under the License.
 
 To use this library in your project, you need to add the dependency to your build tool configuration.
 
-Since this library is not (yet) published to Maven Central (or any other public repository), you need to
-build it and install to your local Maven repository before you can use it in any other project:
-```shell
-gradle publishToMavenLocal
-```
-
 ### Gradle
 
 Add the following dependency to your `build.gradle` if you're using Groovy DSL:
